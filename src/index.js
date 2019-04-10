@@ -2116,6 +2116,51 @@ class Compute extends common.Service {
       }
     );
   }
+
+  getUrlMap(resourceId, callback) {
+    const self = this;
+
+    this.request(
+      {
+        method: 'GET',
+        uri: '/global/urlMaps/' + resourceId,
+      },
+      function(err, resp) {
+        if (err) {
+          callback(err, null, null, resp);
+          return;
+        }
+        const operation = self.operation(resp.name);
+        operation.metadata = resp;
+        callback(null, resp, operation, resp);
+      }
+    );
+  }
+  /**
+   * Minimal implementation of a way to update url maps, needed for Roon's
+   * proxy/load balancer thing.
+   */    
+  patchUrlMap(resourceId, config, callback) {
+    const self = this;
+
+    this.request(
+      {
+        method: 'PATCH',
+        uri: '/global/urlMaps/' + resourceId,
+        json: body,
+      },
+      function(err, resp) {
+        if (err) {
+          callback(err, null, null, resp);
+          return;
+        }
+        const operation = self.operation(resp.name);
+        operation.metadata = resp;
+        callback(null, config, operation, resp);
+      }
+    );
+  }
+    
   /**
    * Get a reference to a Google Compute Engine health check.
    *
