@@ -2147,7 +2147,7 @@ class Compute extends common.Service {
       {
         method: 'PATCH',
         uri: '/global/urlMaps/' + resourceId,
-        json: body,
+        json: config,
       },
       function(err, resp) {
         if (err) {
