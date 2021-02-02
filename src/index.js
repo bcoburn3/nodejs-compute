@@ -2160,6 +2160,27 @@ class Compute extends common.Service {
       }
     );
   }
+
+  updateUrlMap(resourceId, config, callback) {
+    const self = this;
+
+    this.request(
+      {
+        method: 'PUT',
+        uri: '/global/urlMaps/' + resourceId,
+        json: config,
+      },
+      function(err, resp) {
+        if (err) {
+          callback(err, null, null, resp);
+          return;
+        }
+        const operation = self.operation(resp.name);
+        operation.metadata = resp;
+        callback(null, config, operation, resp);
+      }
+    );
+  }
     
   /**
    * Get a reference to a Google Compute Engine health check.
